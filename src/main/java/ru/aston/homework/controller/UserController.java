@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping(value = "user/{id}")
     @ResponseBody
-    public User userById(@PathVariable("id") String id) {
+    public User userById(@PathVariable("id") String id) throws UserExeption {
 
         return userService.getUserById(id);
 

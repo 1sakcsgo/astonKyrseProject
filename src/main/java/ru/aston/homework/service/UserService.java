@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.aston.homework.Exeption.UserExeption;
-import ru.aston.homework.dao.UserDAO;
+import ru.aston.homework.dao.UserDAOImp;
+import ru.aston.homework.dao.UserRepo;
 import ru.aston.homework.entity.User;
 import ru.aston.homework.dto.UserForm;
 
@@ -21,11 +22,11 @@ public class UserService {
     /**
      * Поле репозитория
      */
-    private final UserDAO userDAO;
+    private final UserRepo userRepo;
 
     @Autowired
-    public UserService(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserService(UserDAOImp userDAOImp) {
+        this.userRepo = userDAOImp;
     }
 
     /**
@@ -33,8 +34,14 @@ public class UserService {
      * @param id индитификатор ползователя
      * @return обьект пользователя согласно ID
      */
-    public User getUserById(String id) {
-        return userDAO.getUserById(id);
+    public User getUserById(String id) throws UserExeption {
+        User userFromDb =userRepo.getUserById(id);
+        if (userFromDb!=null){
+            return userFromDb;
+        }else {
+            throw new UserExeption("user is not exist");
+        }
+
     }
 
     /**
@@ -44,9 +51,9 @@ public class UserService {
      * @throws UserExeption
      */
     public ResponseEntity<User> signUp(User user) throws UserExeption {
-        if (!userDAO.isPresent(user.getUsername())) {
+        if (!userRepo.isPresent(user.getUsername())) {
             user.setId(UUID.randomUUID());
-            userDAO.save(user);
+            userRepo.save(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             throw new UserExeption("User exist");
@@ -62,7 +69,7 @@ public class UserService {
      * @throws UserExeption ошибка, если данные пользователя неверные
      */
     public ResponseEntity<User> login(User user) throws UserExeption {
-        User userFromDb = userDAO.getUserByUsername(user.getUsername());
+        User userFromDb = userRepo.getUserByUsername(user.getUsername());
         if (userFromDb != null) {
             if (userFromDb.getPassword().equals(user.getPassword())) {
                 return new ResponseEntity<>(userFromDb, HttpStatus.OK);
@@ -84,7 +91,7 @@ public class UserService {
         if (!userFromDb.getPassword().equals(userForm.getNewPass())) {
 
             userFromDb.setPassword(userForm.getNewPass());
-            userFromDb = userDAO.update(userFromDb);
+            userFromDb = userRepo.update(userFromDb);
             return new ResponseEntity<>(userFromDb, HttpStatus.OK);
         }
         throw new UserExeption("Password already used");
@@ -96,7 +103,7 @@ public class UserService {
      * @return список пользователей
      */
     public List<User> getAllUser() {
-        return userDAO.index();
+        return userRepo.index();
     }
 
 

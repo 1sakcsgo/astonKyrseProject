@@ -12,7 +12,7 @@ import java.util.UUID;
  * Класс выступающий репозиторием для пользователя
  */
 @Component
-public class UserDAO {
+public class UserDAOImp implements UserRepo {
 
     /**
      * Поле необходимо для задания начальных данных

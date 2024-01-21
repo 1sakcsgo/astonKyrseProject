@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.aston.homework.Exeption.UserExeption;
-import ru.aston.homework.dao.UserDAO;
+import ru.aston.homework.dao.UserDAOImp;
 import ru.aston.homework.entity.User;
 import ru.aston.homework.dto.UserForm;
 import ru.aston.homework.service.UserService;
@@ -20,11 +20,11 @@ public class UserServiceTest {
     @BeforeEach
     void setUp() {
 
-        userService = new UserService(new UserDAO());
+        userService = new UserService(new UserDAOImp());
     }
 
     @Test
-    void testgetUserByid() {
+    void testgetUserByid() throws UserExeption {
         User expectedUser = new User(UUID.fromString("efb7ac4e-4b94-42a1-bd00-e18631042d19"), "name", "pass");
         User userFromService = userService.getUserById("efb7ac4e-4b94-42a1-bd00-e18631042d19");
         assertEquals(expectedUser, userFromService);
