@@ -6,16 +6,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.aston.homework.Exeption.UserExeption;
 import ru.aston.homework.dao.UserDAO;
-import ru.aston.homework.dto.User;
+import ru.aston.homework.entity.User;
 import ru.aston.homework.dto.UserForm;
 
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс для работы с пользователем
+ */
 @Service
 public class UserService {
 
-
+    /**
+     * Поле репозитория
+     */
     private final UserDAO userDAO;
 
     @Autowired
@@ -23,10 +28,21 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
+    /**
+     * Получение пользователя по уникальному индитификатору
+     * @param id индитификатор ползователя
+     * @return обьект пользователя согласно ID
+     */
     public User getUserById(String id) {
         return userDAO.getUserById(id);
     }
 
+    /**
+     * Сохраняет (регестрирует) пользователя в системе
+     * @param user обьект пользователя для добавления
+     * @return обьект пользователя при успешном добавлении
+     * @throws UserExeption
+     */
     public ResponseEntity<User> saveUser(User user) throws UserExeption {
         if (!userDAO.isPresent(user.getUsername())) {
             user.setId(UUID.randomUUID());
@@ -39,6 +55,12 @@ public class UserService {
 
     }
 
+    /**
+     * Авторизирует пользователя
+     * @param user обьект прользователя с данными для входа
+     * @return обьект пользователя при успешной авторизаци
+     * @throws UserExeption ошибка, если данные пользователя неверные
+     */
     public ResponseEntity<User> login(User user) throws UserExeption {
         User userFromDb = userDAO.getUserByUsername(user.getUsername());
         if (userFromDb != null) {
@@ -49,6 +71,12 @@ public class UserService {
         throw new UserExeption("Uncorrect password or username");
     }
 
+    /**
+     * Меняет текуий пароль
+     * @param userForm обьект с старым и новым паролем
+     * @return возвращает измененный обьект
+     * @throws UserExeption уведомляет об ошибке
+     */
     public ResponseEntity<User> changePass(UserForm userForm) throws UserExeption {
 
         User userFromDb = login(new User(userForm.getUsername(), userForm.getPassword())).getBody();
@@ -63,7 +91,10 @@ public class UserService {
 
     }
 
-
+    /**
+     * Возвращает всех пользователей
+     * @return список пользователей
+     */
     public List<User> getAllUser() {
         return userDAO.index();
     }

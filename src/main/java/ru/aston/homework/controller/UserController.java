@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aston.homework.Exeption.UserExeption;
-import ru.aston.homework.dto.User;
+import ru.aston.homework.entity.User;
 import ru.aston.homework.dto.UserForm;
 import ru.aston.homework.service.UserService;
 

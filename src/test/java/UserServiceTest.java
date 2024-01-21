@@ -2,7 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.aston.homework.Exeption.UserExeption;
 import ru.aston.homework.dao.UserDAO;
-import ru.aston.homework.dto.User;
+import ru.aston.homework.entity.User;
 import ru.aston.homework.dto.UserForm;
 import ru.aston.homework.service.UserService;
 
