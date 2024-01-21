@@ -43,7 +43,7 @@ public class UserService {
      * @return обьект пользователя при успешном добавлении
      * @throws UserExeption
      */
-    public ResponseEntity<User> saveUser(User user) throws UserExeption {
+    public ResponseEntity<User> signUp(User user) throws UserExeption {
         if (!userDAO.isPresent(user.getUsername())) {
             user.setId(UUID.randomUUID());
             userDAO.save(user);

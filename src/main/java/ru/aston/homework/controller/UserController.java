@@ -30,15 +30,15 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "/addUser")
+    @PostMapping(value = "/signUp")
     @ResponseBody
-    public ResponseEntity<User> addUser(@RequestBody User user) throws UserExeption {
+    public ResponseEntity<User> signUp(@RequestBody User user) throws UserExeption {
 
-        return userService.saveUser(user);
+        return userService.signUp(user);
 
     }
 
-    @PostMapping(value = "/loginUser")
+    @PostMapping(value = "/login")
     @ResponseBody
     public ResponseEntity<User> loginUser(@RequestBody User user) throws UserExeption {
 
