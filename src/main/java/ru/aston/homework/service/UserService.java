@@ -91,7 +91,8 @@ public class UserService {
         if (!userFromDb.getPassword().equals(userForm.getNewPass())) {
 
             userFromDb.setPassword(userForm.getNewPass());
-            userFromDb = userRepo.update(userFromDb);
+            userFromDb = userRepo.update(userFromDb); //имитация работы с бд и без метода update пароль поменяется,
+                                                        // так как userFromDb является ссылкой на обьект в списке
             return new ResponseEntity<>(userFromDb, HttpStatus.OK);
         }
         throw new UserExeption("Password already used");
