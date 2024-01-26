@@ -44,17 +44,17 @@ public class UserService {
             if (userFromDb != null) {
                 return userFromDb;
             } else {
-                throw new EntityNotFoundException("user is not exist");
+                throw new EntityNotFoundException("user does not exist");
             }
         } catch (IllegalArgumentException e) {
-            throw new EntityNotFoundException("user is not exist");
+            throw new EntityNotFoundException("user does not exist");
         }
 
 
     }
 
     /**
-     * Сохраняет (регестрирует) пользователя в системе
+     * Сохраняет (регистрирует) пользователя в системе
      *
      * @param user обьект пользователя для добавления
      * @return обьект пользователя при успешном добавлении
@@ -86,7 +86,7 @@ public class UserService {
                 return new ResponseEntity<>(userFromDb, HttpStatus.OK);
             }
         }
-        throw new WrongPasswordException("Uncorrect password or username");
+        throw new WrongPasswordException("Uncorrected password or username");
     }
 
     /**
