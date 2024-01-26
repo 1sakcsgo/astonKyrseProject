@@ -4,9 +4,11 @@ package ru.aston.homework.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.aston.homework.Exeption.UserExeption;
-import ru.aston.homework.entity.User;
+import ru.aston.homework.Exeption.EntityAlreadyExistsException;
+import ru.aston.homework.Exeption.EntityNotFoundException;
+import ru.aston.homework.Exeption.WrongPasswordException;
 import ru.aston.homework.dto.UserForm;
+import ru.aston.homework.entity.User;
 import ru.aston.homework.service.UserService;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class UserController {
 
     @GetMapping(value = "user/{id}")
     @ResponseBody
-    public User userById(@PathVariable("id") String id) throws UserExeption {
+    public User userById(@PathVariable("id") String id) throws EntityNotFoundException {
 
         return userService.getUserById(id);
 
@@ -32,7 +34,7 @@ public class UserController {
 
     @PostMapping(value = "/signUp")
     @ResponseBody
-    public ResponseEntity<User> signUp(@RequestBody User user) throws UserExeption {
+    public ResponseEntity<User> signUp(@RequestBody User user) throws EntityAlreadyExistsException {
 
         return userService.signUp(user);
 
@@ -40,7 +42,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public ResponseEntity<User> loginUser(@RequestBody User user) throws UserExeption {
+    public ResponseEntity<User> loginUser(@RequestBody User user) throws WrongPasswordException {
 
         return userService.login(user);
 
@@ -48,7 +50,7 @@ public class UserController {
 
     @PostMapping(value = "/changePass")
     @ResponseBody
-    public ResponseEntity<User> changePass(@RequestBody UserForm user) throws UserExeption {
+    public ResponseEntity<User> changePass(@RequestBody UserForm user) throws WrongPasswordException, EntityAlreadyExistsException {
 
         return userService.changePass(user);
 
