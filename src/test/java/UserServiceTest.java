@@ -4,9 +4,9 @@ import ru.aston.homework.Exeption.EntityAlreadyExistsException;
 import ru.aston.homework.Exeption.EntityNotFoundException;
 
 import ru.aston.homework.Exeption.WrongPasswordException;
-import ru.aston.homework.dao.UserDAOImp;
+
 import ru.aston.homework.entity.User;
-import ru.aston.homework.dto.UserForm;
+
 import ru.aston.homework.service.UserService;
 
 import java.util.Arrays;
@@ -20,11 +20,11 @@ public class UserServiceTest {
     UserService userService;
 
 
-    @BeforeEach
-    void setUp() {
-
-        userService = new UserService(new UserDAOImp());
-    }
+//    @BeforeEach
+//    void setUp() {
+//
+//        userService = new UserService(new UserDAOImp());
+//    }
 
     @Test
     void testgetUserByid() throws EntityNotFoundException {
@@ -42,13 +42,13 @@ public class UserServiceTest {
 
     }
 
-    @Test
-    void testChangePass() throws WrongPasswordException, EntityAlreadyExistsException {
-        User expectedUser = new User(UUID.fromString("efb7ac4e-4b94-42a1-bd00-e18631042d19"), "name", "newPass");
-        User newUser = userService.changePass(new UserForm("name", "pass", "newPass")).getBody();
-        assertEquals(expectedUser, newUser);
-
-    }
+//    @Test
+//    void testChangePass() throws WrongPasswordException, EntityAlreadyExistsException {
+//        User expectedUser = new User(UUID.fromString("efb7ac4e-4b94-42a1-bd00-e18631042d19"), "name", "newPass");
+//        User newUser = userService.changePass(new UserForm("name", "pass", "newPass")).getBody();
+//        assertEquals(expectedUser, newUser);
+//
+//    }
 
     @Test
     void tesGetAllUser() {

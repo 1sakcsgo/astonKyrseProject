@@ -48,11 +48,11 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "/changePass")
+    @PostMapping(value = "/changePass/{id}")
     @ResponseBody
-    public ResponseEntity<User> changePass(@RequestBody UserForm user) throws WrongPasswordException, EntityAlreadyExistsException {
+    public ResponseEntity<User> changePass(@RequestBody UserForm userForm,@PathVariable("id") String id) throws  EntityAlreadyExistsException, EntityNotFoundException {
 
-        return userService.changePass(user);
+        return userService.changePass(userForm,id);
 
     }
 

@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 import ru.aston.homework.Exeption.EntityAlreadyExistsException;
 import ru.aston.homework.Exeption.EntityNotFoundException;
 import ru.aston.homework.Exeption.WrongPasswordException;
-import ru.aston.homework.dao.UserDAOImp;
 import ru.aston.homework.dao.UserRepo;
-import ru.aston.homework.entity.User;
 import ru.aston.homework.dto.UserForm;
+import ru.aston.homework.entity.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +26,7 @@ public class UserService {
     private final UserRepo userRepo;
 
     @Autowired
-    public UserService(UserDAOImp userDAOImp) {
+    public UserService(UserRepo userDAOImp) {
         this.userRepo = userDAOImp;
     }
 
@@ -38,9 +37,9 @@ public class UserService {
      * @return обьект пользователя согласно ID
      */
     public User getUserById(String id) throws EntityNotFoundException {
-        User userFromDb = null;
+
         try {
-            userFromDb = userRepo.getUserById(id);
+            User userFromDb = userRepo.findById(id);
             if (userFromDb != null) {
                 return userFromDb;
             } else {
@@ -80,7 +79,7 @@ public class UserService {
      * @throws WrongPasswordException ошибка, если данные пользователя неверные
      */
     public ResponseEntity<User> login(User user) throws WrongPasswordException {
-        User userFromDb = userRepo.getUserByUsername(user.getUsername());
+        User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {
             if (userFromDb.getPassword().equals(user.getPassword())) {
                 return new ResponseEntity<>(userFromDb, HttpStatus.OK);
@@ -95,15 +94,14 @@ public class UserService {
      * @param userForm обьект с старым и новым паролем
      * @return возвращает измененный обьект
      */
-    public ResponseEntity<User> changePass(UserForm userForm) throws WrongPasswordException, EntityAlreadyExistsException {
+    public ResponseEntity<User> changePass(UserForm userForm, String id) throws EntityAlreadyExistsException, EntityNotFoundException {
 
-        User userFromDb = login(new User(userForm.getUsername(), userForm.getPassword())).getBody();
+//        User userFromDb = login(new User(userForm.getUsername(), userForm.getPassword())).getBody();
 
+        User userFromDb = getUserById(id);
         if (!userFromDb.getPassword().equals(userForm.getNewPass())) {
-
             userFromDb.setPassword(userForm.getNewPass());
-            userFromDb = userRepo.update(userFromDb); //имитация работы с бд и без метода update пароль поменяется,
-            // так как userFromDb является ссылкой на обьект в списке
+            userRepo.update(userFromDb);
             return new ResponseEntity<>(userFromDb, HttpStatus.OK);
         }
         throw new EntityAlreadyExistsException("Password already used");
