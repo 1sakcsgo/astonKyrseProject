@@ -2,6 +2,7 @@ package ru.aston.homework.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aston.homework.Exeption.EntityAlreadyExistsException;
@@ -26,17 +27,17 @@ public class UserController {
 
     @GetMapping(value = "user/{id}")
     @ResponseBody
-    public User userById(@PathVariable("id") String id) throws EntityNotFoundException {
+    public ResponseEntity<User> userById(@PathVariable("id") String id) throws EntityNotFoundException {
 
-        return userService.getUserById(id);
+        return new ResponseEntity<>(userService.getUserById(id),HttpStatus.OK);
 
     }
 
     @PostMapping(value = "/signUp")
     @ResponseBody
     public ResponseEntity<User> signUp(@RequestBody User user) throws EntityAlreadyExistsException {
+        return new ResponseEntity<>(userService.signUp(user), HttpStatus.OK);
 
-        return userService.signUp(user);
 
     }
 
@@ -44,20 +45,20 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<User> loginUser(@RequestBody User user) throws WrongPasswordException {
 
-        return userService.login(user);
+        return new ResponseEntity<>(userService.login(user), HttpStatus.OK) ;
 
     }
 
     @PostMapping(value = "/changePass/{id}")
     @ResponseBody
     public ResponseEntity<User> changePass(@RequestBody UserForm userForm,@PathVariable("id") String id) throws  EntityAlreadyExistsException, EntityNotFoundException {
+        return new ResponseEntity<>(userService.changePass(userForm,id), HttpStatus.OK);
 
-        return userService.changePass(userForm,id);
 
     }
 
     @GetMapping("allUser")
-    public List<User> showAllUser() {
-        return userService.getAllUser();
+    public ResponseEntity <List<User>> showAllUser() throws EntityNotFoundException {
+        return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
     }
 }

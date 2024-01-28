@@ -37,7 +37,7 @@ public class UserServiceTest {
     @Test
     void testloginUser() throws WrongPasswordException {
         User expectedUser = new User(UUID.fromString("efb7ac4e-4b94-42a1-bd00-e18631042d19"), "name", "pass");
-        User userFromService = userService.login(expectedUser).getBody();
+        User userFromService = userService.login(expectedUser);
         assertEquals(expectedUser, userFromService);
 
     }
@@ -51,7 +51,7 @@ public class UserServiceTest {
 //    }
 
     @Test
-    void tesGetAllUser() {
+    void tesGetAllUser() throws EntityNotFoundException {
         List<User> initdata = Arrays
                 .asList(new User(UUID.fromString("efb7ac4e-4b94-42a1-bd00-e18631042d19"), "name", "pass"),
                         new User(UUID.fromString("efb7ac4e-4b94-42a1-bd00-e1d641042d19"), "na", "pass"),

@@ -59,11 +59,11 @@ public class UserService {
      * @return обьект пользователя при успешном добавлении
      * @throws EntityAlreadyExistsException
      */
-    public ResponseEntity<User> signUp(User user) throws EntityAlreadyExistsException {
+    public User signUp(User user) throws EntityAlreadyExistsException {
         if (!userRepo.isPresent(user.getUsername())) {
             user.setId(UUID.randomUUID());
             userRepo.save(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return user;
         } else {
             throw new EntityAlreadyExistsException("User exist");
 
@@ -78,11 +78,11 @@ public class UserService {
      * @return обьект пользователя при успешной авторизаци
      * @throws WrongPasswordException ошибка, если данные пользователя неверные
      */
-    public ResponseEntity<User> login(User user) throws WrongPasswordException {
+    public User login(User user) throws WrongPasswordException {
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {
             if (userFromDb.getPassword().equals(user.getPassword())) {
-                return new ResponseEntity<>(userFromDb, HttpStatus.OK);
+                return userFromDb;
             }
         }
         throw new WrongPasswordException("Uncorrected password or username");
@@ -94,7 +94,7 @@ public class UserService {
      * @param userForm обьект с старым и новым паролем
      * @return возвращает измененный обьект
      */
-    public ResponseEntity<User> changePass(UserForm userForm, String id) throws EntityAlreadyExistsException, EntityNotFoundException {
+    public User changePass(UserForm userForm, String id) throws EntityAlreadyExistsException, EntityNotFoundException {
 
 //        User userFromDb = login(new User(userForm.getUsername(), userForm.getPassword())).getBody();
 
@@ -102,7 +102,7 @@ public class UserService {
         if (!userFromDb.getPassword().equals(userForm.getNewPass())) {
             userFromDb.setPassword(userForm.getNewPass());
             userRepo.update(userFromDb);
-            return new ResponseEntity<>(userFromDb, HttpStatus.OK);
+            return userFromDb;
         }
         throw new EntityAlreadyExistsException("Password already used");
 
@@ -113,8 +113,14 @@ public class UserService {
      *
      * @return список пользователей
      */
-    public List<User> getAllUser() {
-        return userRepo.index();
+    public List<User> getAllUser() throws EntityNotFoundException {
+        List <User> userList =userRepo.index();
+        if (userList.isEmpty()){
+            throw new EntityNotFoundException("user does not exist");
+        }else {
+            return  userList;
+        }
+
     }
 
 
