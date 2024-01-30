@@ -33,7 +33,6 @@ public class UserRepositoryImp implements UserRepo {
         try (Session session = sessionFactoryConfig.getSession()) {
             return session.get(User.class, UUID.fromString(id));
         }
-
     }
 
     @Override

@@ -1,8 +1,6 @@
 package ru.aston.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.aston.homework.Exeption.EntityAlreadyExistsException;
 import ru.aston.homework.Exeption.EntityNotFoundException;
@@ -96,8 +94,6 @@ public class UserService {
      */
     public User changePass(UserForm userForm, String id) throws EntityAlreadyExistsException, EntityNotFoundException {
 
-//        User userFromDb = login(new User(userForm.getUsername(), userForm.getPassword())).getBody();
-
         User userFromDb = getUserById(id);
         if (!userFromDb.getPassword().equals(userForm.getNewPass())) {
             userFromDb.setPassword(userForm.getNewPass());
@@ -114,11 +110,11 @@ public class UserService {
      * @return список пользователей
      */
     public List<User> getAllUser() throws EntityNotFoundException {
-        List <User> userList =userRepo.index();
-        if (userList.isEmpty()){
+        List<User> userList = userRepo.index();
+        if (userList.isEmpty()) {
             throw new EntityNotFoundException("user does not exist");
-        }else {
-            return  userList;
+        } else {
+            return userList;
         }
 
     }
