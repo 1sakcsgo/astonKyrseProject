@@ -23,7 +23,10 @@ public class UserRepositoryImp implements UserRepo {
     @Override
     public List<User> index() {
         try (Session session = sessionFactoryConfig.getSession()) {
-            return session.createQuery("FROM User ", User.class).list();
+            session.beginTransaction();
+            List<User> userList = session.createQuery("FROM User ", User.class).list();
+            session.getTransaction().commit();
+            return userList ;
         }
 
     }
@@ -31,7 +34,10 @@ public class UserRepositoryImp implements UserRepo {
     @Override
     public User findById(String id) {
         try (Session session = sessionFactoryConfig.getSession()) {
-            return session.get(User.class, UUID.fromString(id));
+            session.beginTransaction();
+            User user = session.get(User.class, UUID.fromString(id));
+            session.getTransaction().commit();
+            return user;
         }
     }
 
@@ -41,6 +47,7 @@ public class UserRepositoryImp implements UserRepo {
             session.beginTransaction();
             session.save(user);
             session.flush();
+            session.getTransaction().commit();
             return true;
         }
 
@@ -52,6 +59,7 @@ public class UserRepositoryImp implements UserRepo {
             session.beginTransaction();
             session.update(user);
             session.flush();
+            session.getTransaction().commit();
             return user;
         }
     }
@@ -59,10 +67,12 @@ public class UserRepositoryImp implements UserRepo {
     @Override
     public User findByUsername(String username) {
         try (Session session = sessionFactoryConfig.getSession()) {
+            session.beginTransaction();
             Query query = session.createQuery(" FROM User u where u.username=:inputUsername");
             query.setParameter("inputUsername", username);
-
-            return (User) query.uniqueResult();
+            User user =(User) query.uniqueResult();
+            session.getTransaction().commit();
+            return user;
 
         }
     }
@@ -70,9 +80,11 @@ public class UserRepositoryImp implements UserRepo {
     @Override
     public boolean isPresent(String username) {
         try (Session session = sessionFactoryConfig.getSession()) {
+            session.beginTransaction();
             Query query = session.createQuery("select count (*)  FROM User u where u.username=:inputUsername");
             query.setParameter("inputUsername", username);
             Long count = (Long) query.uniqueResult();
+            session.getTransaction().commit();
             return count > 0;
 
         }
