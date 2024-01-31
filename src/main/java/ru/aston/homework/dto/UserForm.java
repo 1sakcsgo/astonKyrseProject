@@ -11,10 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserForm {
-    /**
-     * Поле с именем пользователя
-     */
-    private String username;
+
     /**
      * Поле с текущим паролем пользователя
      */

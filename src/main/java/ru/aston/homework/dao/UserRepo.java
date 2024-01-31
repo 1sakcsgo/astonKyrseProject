@@ -8,13 +8,13 @@ public interface UserRepo {
 
     List<User> index();
 
-    User getUserById(String id);
+    User findById(String id);
 
     boolean save(User user);
 
     User update(User user);
 
-    User getUserByUsername(String username);
+    User findByUsername(String username);
 
     boolean isPresent(String username);
 }

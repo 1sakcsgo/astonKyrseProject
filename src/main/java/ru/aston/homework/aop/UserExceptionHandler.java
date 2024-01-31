@@ -1,9 +1,12 @@
-package ru.aston.homework.Exeption;
+package ru.aston.homework.aop;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.aston.homework.Exeption.EntityAlreadyExistsException;
+import ru.aston.homework.Exeption.EntityNotFoundException;
+import ru.aston.homework.Exeption.WrongPasswordException;
 
 @ControllerAdvice
 public class UserExceptionHandler {
