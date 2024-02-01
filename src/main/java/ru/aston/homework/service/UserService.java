@@ -2,9 +2,9 @@ package ru.aston.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.aston.homework.Exeption.EntityAlreadyExistsException;
-import ru.aston.homework.Exeption.EntityNotFoundException;
-import ru.aston.homework.Exeption.WrongPasswordException;
+import ru.aston.homework.exeption.EntityAlreadyExistsException;
+import ru.aston.homework.exeption.EntityNotFoundException;
+import ru.aston.homework.exeption.WrongPasswordException;
 import ru.aston.homework.dao.UserRepo;
 import ru.aston.homework.dto.UserForm;
 import ru.aston.homework.entity.User;

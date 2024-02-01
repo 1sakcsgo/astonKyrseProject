@@ -1,4 +1,4 @@
-package ru.aston.homework.Exeption;
+package ru.aston.homework.exeption;
 
 public class WrongPasswordException extends Exception {
     private String message;

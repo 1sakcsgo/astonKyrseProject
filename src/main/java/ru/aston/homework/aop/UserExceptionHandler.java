@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.aston.homework.Exeption.EntityAlreadyExistsException;
-import ru.aston.homework.Exeption.EntityNotFoundException;
-import ru.aston.homework.Exeption.WrongPasswordException;
+import ru.aston.homework.exeption.EntityAlreadyExistsException;
+import ru.aston.homework.exeption.EntityNotFoundException;
+import ru.aston.homework.exeption.WrongPasswordException;
 
 @ControllerAdvice
 public class UserExceptionHandler {
