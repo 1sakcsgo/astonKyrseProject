@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service;
 import ru.aston.homework.Exeption.EntityAlreadyExistsException;
 import ru.aston.homework.Exeption.EntityNotFoundException;
 import ru.aston.homework.Exeption.WrongPasswordException;
-import ru.aston.homework.dao.UserRepo;
+import ru.aston.homework.repository.UserRepo;
 import ru.aston.homework.dto.UserForm;
 import ru.aston.homework.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,9 +38,9 @@ public class UserService {
     public User getUserById(String id) throws EntityNotFoundException {
 
         try {
-            User userFromDb = userRepo.findById(id);
-            if (userFromDb != null) {
-                return userFromDb;
+            Optional<User> userFromDb = userRepo.findById(UUID.fromString(id));
+            if (userFromDb.isPresent()) {
+                return userFromDb.get();
             } else {
                 throw new EntityNotFoundException("user does not exist");
             }
@@ -58,7 +59,7 @@ public class UserService {
      * @throws EntityAlreadyExistsException
      */
     public User signUp(User user) throws EntityAlreadyExistsException {
-        if (!userRepo.isPresent(user.getUsername())) {
+        if (!userRepo.existsByUsername(user.getUsername())) {
             user.setId(UUID.randomUUID());
             userRepo.save(user);
             return user;
@@ -97,7 +98,7 @@ public class UserService {
         User userFromDb = getUserById(id);
         if (!userFromDb.getPassword().equals(userForm.getNewPass())) {
             userFromDb.setPassword(userForm.getNewPass());
-            userRepo.update(userFromDb);
+            userRepo.save(userFromDb);
             return userFromDb;
         }
         throw new EntityAlreadyExistsException("Password already used");
@@ -110,7 +111,7 @@ public class UserService {
      * @return список пользователей
      */
     public List<User> getAllUser() throws EntityNotFoundException {
-        List<User> userList = userRepo.index();
+        List<User> userList = userRepo.findAll();
         if (userList.isEmpty()) {
             throw new EntityNotFoundException("user does not exist");
         } else {
