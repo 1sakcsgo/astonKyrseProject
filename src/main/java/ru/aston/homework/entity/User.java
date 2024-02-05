@@ -1,9 +1,7 @@
 package ru.aston.homework.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.annotation.Generated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +23,7 @@ public class User {
      * Поле для хранения уникального индитификатора пользователя
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name ="id")
     private UUID id;
 

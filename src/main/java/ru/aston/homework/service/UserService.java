@@ -38,12 +38,9 @@ public class UserService {
     public User getUserById(String id) throws EntityNotFoundException {
 
         try {
-            Optional<User> userFromDb = userRepo.findById(UUID.fromString(id));
-            if (userFromDb.isPresent()) {
-                return userFromDb.get();
-            } else {
-                throw new EntityNotFoundException("user does not exist");
-            }
+            return userRepo.findById(UUID.fromString(id))
+                    .orElseThrow(()-> new EntityNotFoundException("user does not exist"));
+
         } catch (IllegalArgumentException e) {
             throw new EntityNotFoundException("user does not exist");
         }
@@ -60,7 +57,6 @@ public class UserService {
      */
     public User signUp(User user) throws EntityAlreadyExistsException {
         if (!userRepo.existsByUsername(user.getUsername())) {
-            user.setId(UUID.randomUUID());
             userRepo.save(user);
             return user;
         } else {
@@ -79,12 +75,12 @@ public class UserService {
      */
     public User login(User user) throws WrongPasswordException {
         User userFromDb = userRepo.findByUsername(user.getUsername());
-        if (userFromDb != null) {
-            if (userFromDb.getPassword().equals(user.getPassword())) {
-                return userFromDb;
-            }
+
+        if (userFromDb != null && userFromDb.getPassword().equals(user.getPassword())) {
+            return userFromDb;
         }
-        throw new WrongPasswordException("Uncorrected password or username");
+
+        throw new WrongPasswordException("Incorrect password or username");
     }
 
     /**
